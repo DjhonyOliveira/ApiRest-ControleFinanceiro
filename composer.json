@@ -1,0 +1,33 @@
+{
+    "name": "unidavi/api",
+    "version": "1.0.0",
+    "description": "API Rest",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Djonatan R. de Oliveira",
+            "email": "Djonatan.oliveira@unidavi.edu.br",
+            "role": "developer"
+        },
+        {
+            "name": "Bernardo",
+            "role": "developer"
+        }
+    ],
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "Api\\": "Api/"
+        },
+        "files": [
+            "Api/Utils/helpers.php"
+        ]
+    },
+    "require": {
+        "php": "^8.0",
+        "ext-pdo": "^8.0"
+    }
+}
