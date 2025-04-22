@@ -12,11 +12,12 @@
 ## 🛠 Operações Suportadas
 Todos os endpoints suportam os seguintes métodos:
 
-Método Descrição	Exemplo de Uso
-GET	Recupera recursos	GET /meta/ (lista todas)
-POST	Cria novo recurso	POST /usuario/ (novo usuário)
-PUT	Atualiza recurso existente	PUT /transacao/1 (atualiza ID 1)
-DELETE	Remove recurso	DELETE /categoria/3 (remove ID 3)
+| Método  | Descrição                     | Exemplo de Uso                   |
+|:-------:|:-----------------------------:|:--------------------------------:|
+| 🔍 GET     | Recupera recursos             | `GET /meta/` (lista todas)       |
+| ➕ POST    | Cria novo recurso             | `POST /usuario/` (novo usuário)  |
+| ✏️ PUT     | Atualiza recurso existente    | `PUT /transacao/1` (atualiza ID 1) |
+| ❌ DELETE  | Remove recurso                | `DELETE /categoria/3` (remove ID 3) |
 
 ## 📚 Documentação dos Recursos
 1. Metas (/meta/)
@@ -78,21 +79,27 @@ Estrutura de Dados:
 
 ## ⚙️ Requisitos Técnicos
 - Servidor web (Apache)
-
 - PHP 8.0 ou superior
-
 - Banco de dados PostgreSQL
-
 - Extensão PDO para PHP
+- Composer para gerenciamento de dependencias
 
 ## 🚀 Instalação
 Clone o repositório:
 
-bash
-git clone https://github.com/seu-usuario/api-financas.git
+```bash
+git clone https://github.com/DjhonyOliveira/ApiRest-ControleFinanceiro.git POO
+```
+
 - Configure o banco de dados:
  Dentro do diretorio API/ existe a pasta db, basta copiar o script sql e executar em seu sgdb
 
-crie um arquivo .env e Ajuste as credenciais para conexão com seu banco de dados com base no arquivo .env.example presente na raiz do projeto
+Crie um arquivo .env e Ajuste as credenciais para conexão com seu banco de dados com base no arquivo .env.example presente na raiz do projeto
+
+Com tudo instalado ok, necessário executar a instalação do composer para gerenciamento do autoload das class, dentro do diretório princiapal, execute:
+
+```bash
+composer install
+```
 
 Utilizando insomnia, postman, etc, execute as requisições conforme citado a cima.
