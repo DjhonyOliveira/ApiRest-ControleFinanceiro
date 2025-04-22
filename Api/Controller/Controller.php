@@ -30,7 +30,7 @@ abstract class Controller
 
     abstract public function create();
 
-    abstract public function update();
+    abstract public function update(int $id);
 
     abstract public function delete(int $id);
 

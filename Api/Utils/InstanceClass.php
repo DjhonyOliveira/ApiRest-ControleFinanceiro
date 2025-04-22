@@ -2,8 +2,6 @@
 
 namespace Api\Utils;
 
-use Exception;
-
 /**
  * Classe para instancia dinâmica dos controllers da API com base na requisição recebida
  * @package    Api

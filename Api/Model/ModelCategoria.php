@@ -34,4 +34,13 @@ class ModelCategoria extends Model
         return false;
     }
 
+    public function atualizaCategoria(array $data, $idCategoria): bool
+    {
+        if(!is_null($this->update($data, "id = :id", "id={$idCategoria}"))){
+            return true;
+        }
+
+        return false;
+    }
+
 }

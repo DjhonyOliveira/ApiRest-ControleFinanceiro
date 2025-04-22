@@ -73,9 +73,34 @@ class ControllerUsuario extends Controller
         Response::ResponseJson($aRetorno ?? $aRetornoPadrao);
     }
 
-    public function update()
+    public function update(int $id): void
     {
+        $request          = $this->request;
+        $aCamposAtualizar = [];
 
+        if(ArrayUtils::validaChaveExiste($request, 'nome')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($request, 'nome', 'string')){
+                $aCamposAtualizar['nome'] = $request['nome'];
+            }
+        }
+        
+        if(ArrayUtils::validaChaveExiste($request, 'email')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($request, 'email', 'string')){
+                $aCamposAtualizar['email'] = $request['email'];
+            }
+        }
+
+        if($this->model->findById('id', $id)){
+            if($this->model->atualizaUsuario($aCamposAtualizar, $id)){
+                Response::ResponseJson(['ok' => 'usuário atualizado com sucesso']);
+            }
+            else{
+                Response::ResponseJson(['error' => $this->model->fail()->getMessage()], EnumResponse::INTERNAL_SERVER_ERROR);
+            }
+        }
+        else{
+            Response::ResponseJson(['error' => 'Usuário não encontrado'], EnumResponse::BAD_REQUEST);
+        }        
     }
 
     public function delete(int $id): void

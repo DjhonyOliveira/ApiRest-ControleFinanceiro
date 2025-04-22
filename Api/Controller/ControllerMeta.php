@@ -78,9 +78,50 @@ class ControllerMeta extends Controller
         Response::ResponseJson($aRetorno ?? $aRetornoPadrao);
     }
 
-    public function update(): void
+    public function update(int $id): void
     {
+        $aRequest = $this->request;
+        $aDadosAtualizar = [];
 
+        if(ArrayUtils::validaChaveExiste($aRequest, 'nome')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'nome', 'string')){
+                $aDadosAtualizar['nome'] = $aRequest['nome'];
+            }
+            else{
+                $this->error->setMessage('Campo nome deve ser string');
+                $this->error->errorResponse();
+            }
+        }
+
+        if(ArrayUtils::validaChaveExiste($aRequest, 'valor_alvo')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'valor_alvo', 'float')){
+                $aDadosAtualizar['valor_alvo'] = $aRequest['valor_alvo']; 
+            }
+            else{
+                $this->error->setMessage('Campo valor_alvo deve ser float');
+                $this->error->errorResponse();
+            }
+        }
+
+        if(ArrayUtils::validaChaveExiste($aRequest, 'data_limite')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'data_limite', 'date')){
+                $aDadosAtualizar['data_limite'] = $aRequest['data_limite'];
+            }
+            else{
+                $this->error->setMessage('Campo data_limite deve ser date');
+                $this->error->errorResponse();
+            }
+        }
+
+        if($this->model->findById('id', $id)){
+            if($this->model->atualizaMeta($aDadosAtualizar, $id)){
+                Response::ResponseJson(['ok' => 'Meta Atualizada com sucesso!']);
+            }
+            else{
+                Response::ResponseJson(['error' => $this->model->fail()->getMessage()], EnumResponse::BAD_REQUEST);
+            }
+
+        }
     }
 
     public function delete(int $id): void

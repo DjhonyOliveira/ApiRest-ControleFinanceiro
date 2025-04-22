@@ -13,7 +13,7 @@ class ModelTransacao extends Model
 {
     public function __construct()
     {
-        parent::__construct('transacao', ['id', 'user_id', 'categoria_id'], ['valor', 'data', 'descricao']);
+        parent::__construct('transacao', ['id', 'user_id', 'categoria_id'], ['valor', 'date', 'descricao']);
     }
 
     /**
@@ -37,6 +37,15 @@ class ModelTransacao extends Model
     public function criaTransacao(array $data): bool
     {
         if(!is_null($this->create($data))){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function atualizaTransacao(array $dados, int $idTransacao)
+    {
+        if($this->update($dados, 'id= :id', "id={$idTransacao}")){
             return true;
         }
 

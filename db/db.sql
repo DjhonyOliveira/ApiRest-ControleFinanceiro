@@ -18,8 +18,8 @@ create table transacao
 	user_id integer not null,
 	categoria_id integer not null,
 	valor numeric(5,2) not null,
-	data date not null,
-	descricao varchar(255)
+	descricao varchar(255),
+	date date not null
 );
 
 create table metas

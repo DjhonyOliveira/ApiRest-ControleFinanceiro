@@ -33,4 +33,14 @@ class ModelMeta extends Model
 
         return false;
     }
+
+    public function atualizaMeta(array $dados, int $idMeta)
+    {
+        if($this->update($dados, 'id=:id', "id={$idMeta}")){
+            return true;
+        }
+
+        return false;
+    }
+
 }

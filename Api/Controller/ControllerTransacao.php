@@ -64,7 +64,7 @@ class ControllerTransacao extends Controller
                     $data->usuario   = $oModelTransacao->getData()->user_id;
                     $data->categoria = $oModelTransacao->getData()->categoria_id;
                     $data->valor     = $oModelTransacao->getData()->valor;
-                    $data->data      = $oModelTransacao->getData()->data;
+                    $data->date      = $oModelTransacao->getData()->date;
                     $data->descricao = $oModelTransacao->getData()->descricao;
     
                     $aTransacao[] = $data;
@@ -77,9 +77,49 @@ class ControllerTransacao extends Controller
         Response::ResponseJson($aRetorno ?? $aRetornoPadrao);
     }
 
-    public function update(): void
+    public function update(int $id): void
     {
+        $aRequest        = $this->request;
+        $aDadosAtualizar = [];
 
+        if(ArrayUtils::validaChaveExiste($aRequest, 'valor')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'valor', 'float')){
+                $aDadosAtualizar['valor'] = $aRequest['valor'];
+            }
+            else{
+                $this->error->setMessage('Campo valor deve ser float');
+                $this->error->errorResponse();
+            }
+        }
+
+        if(ArrayUtils::validaChaveExiste($aRequest, 'date')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'date', 'date')){
+                $aDadosAtualizar['date'] = $aRequest['date']; 
+            }
+            else{
+                $this->error->setMessage('Campo date deve ser date');
+                $this->error->errorResponse();
+            }
+        }
+
+        if(ArrayUtils::validaChaveExiste($aRequest, 'descricao')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'descricao', 'string')){
+                $aDadosAtualizar['descricao'] = $aRequest['descricao'];
+            }
+            else{
+                $this->error->setMessage('Campo descricao deve ser string');
+                $this->error->errorResponse();
+            }
+        }
+
+        if($this->model->findById('id', $id)){
+            if($this->model->atualizaTransacao($aDadosAtualizar, $id)){
+                Response::ResponseJson(['ok' => 'transação atualizadoo com sucesso']);
+            }
+            else{
+                Response::ResponseJson(['error' => $this->model->fail()->getMessage()], EnumResponse::BAD_REQUEST);
+            }
+        }        
     }
 
     public function delete(int $id): void
@@ -110,13 +150,13 @@ class ControllerTransacao extends Controller
             $this->error->errorResponse();
         }
 
-        if(!ArrayUtils::validaChaveExiste($aRequest, 'data')){
-            $this->error->setMessage('Campo obrigatório categoria não informado ou inválido');
+        if(!ArrayUtils::validaChaveExiste($aRequest, 'date')){
+            $this->error->setMessage('Campo obrigatório date não informado ou inválido');
             $this->error->errorResponse();
         }
 
         if(!ArrayUtils::validaChaveExiste($aRequest, 'descricao')){
-            $this->error->setMessage('Campo obrigatório categoria não informado ou inválido');
+            $this->error->setMessage('Campo obrigatório descricao não informado ou inválido');
             $this->error->errorResponse();
         }
 
@@ -135,8 +175,8 @@ class ControllerTransacao extends Controller
             $this->error->errorResponse();
         }
 
-        if(!ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'data', 'date')){
-            $this->error->setMessage('Campo data deve ser date');
+        if(!ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'date', 'date')){
+            $this->error->setMessage('Campo date deve ser date');
             $this->error->errorResponse();
         }
 
@@ -152,7 +192,7 @@ class ControllerTransacao extends Controller
         $aDadosTratado['user_id']      = $aDados['usuario'];
         $aDadosTratado['categoria_id'] = $aDados['categoria'];
         $aDadosTratado['valor']        = $aDados['valor'];
-        $aDadosTratado['data']         = $aDados['data'];
+        $aDadosTratado['date']         = $aDados['date'];
         $aDadosTratado['descricao']    = $aDados['descricao'];
 
         return $aDadosTratado;

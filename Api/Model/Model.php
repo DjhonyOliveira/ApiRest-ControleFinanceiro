@@ -4,6 +4,7 @@ namespace Api\Model;
 
 use Api\Config\Connect;
 use Api\Utils\Error;
+use stdClass;
 
 /**
  * Modelo base do sistema
@@ -45,10 +46,10 @@ abstract class Model
      * @param $name
      * @param $value
      */
-    public function __set($name, $value): void
+    public function __set(mixed $name, $value): void
     {
         if (empty($this->data)) {
-            $this->data = new \stdClass();
+            $this->data = new stdClass();
         }
 
         $this->data->$name = $value;
@@ -58,7 +59,7 @@ abstract class Model
      * @param $name
      * @return bool
      */
-    public function __isset($name)
+    public function __isset($name): bool
     {
         return isset($this->data->$name);
     }
@@ -67,15 +68,15 @@ abstract class Model
      * @param $name
      * @return null
      */
-    public function __get($name)
-    {
-        return ($this->data->$name ?? null);
-    }
+    // public function __get($name): mixed
+    // {
+    //     return ($this->data->$name ?? null);
+    // }
 
     /**
      * @return null|object
      */
-    public function getData(): ?object
+    public function getData()
     {
         return $this->data;
     }

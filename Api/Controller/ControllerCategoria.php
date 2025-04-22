@@ -73,9 +73,34 @@ class ControllerCategoria extends Controller
         Response::ResponseJson($aRetorno ?? $aRetornoPadrao);
     }
 
-    public function update(): void
+    public function update(int $id): void
     {
+        $request          = $this->request;
+        $aCamposAtualizar = [];
 
+        if(ArrayUtils::validaChaveExiste($request, 'nome')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($request, 'nome', 'string')){
+                $aCamposAtualizar['nome'] = $request['nome'];
+            }
+        }
+        
+        if(ArrayUtils::validaChaveExiste($request, 'tipo')){
+            if(ArrayUtils::validaTipoDadoPosicaoArray($request, 'tipo', 'string')){
+                $aCamposAtualizar['tipo'] = $request['tipo'];
+            }
+        }
+
+        if($this->model->findById('id', $id)){
+            if($this->model->atualizaCategoria($aCamposAtualizar, $id)){
+                Response::ResponseJson(['ok' => 'categoria atualizada com sucesso']);
+            }
+            else{
+                Response::ResponseJson(['error' => $this->model->fail()->getMessage()], EnumResponse::INTERNAL_SERVER_ERROR);
+            }
+        }
+        else{
+            Response::ResponseJson(['error' => 'Categoria não encontrada'], EnumResponse::BAD_REQUEST);
+        }        
     }
 
     public function delete(int $id): void

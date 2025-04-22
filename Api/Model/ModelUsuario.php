@@ -23,5 +23,14 @@ class ModelUsuario extends Model
     {
         return $this->create($data);
     }
+
+    public function atualizaUsuario(array $data, int $idUsuario): bool
+    {
+        if(!is_null($this->update($data, "id = :id", "id=$idUsuario"))){
+            return true;
+        }
+
+        return false;
+    }
     
 }

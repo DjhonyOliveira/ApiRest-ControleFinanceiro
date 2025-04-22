@@ -36,7 +36,7 @@ class ApiRouter
                     $oController->create();
                     break;
                 case 'PUT':
-                    $oController->update();
+                    $oController->update($id);
                     break;
                 case 'DELETE':
                     $oController->delete($id);
