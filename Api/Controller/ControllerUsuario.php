@@ -116,22 +116,22 @@ class ControllerUsuario extends Controller
     {
         $this->error->setErrCode(EnumResponse::BAD_REQUEST);
 
-        if(ArrayUtils::validaChaveExiste($aRequest, 'nome')){
+        if(!ArrayUtils::validaChaveExiste($aRequest, 'nome')){
             $this->error->setMessage('Campo obrigatório nome não informado ou inválido');
             $this->error->errorResponse();
         }
 
-        if(ArrayUtils::validaChaveExiste($aRequest, 'email')){
+        if(!ArrayUtils::validaChaveExiste($aRequest, 'email')){
             $this->error->setMessage('Campo obrigatório email não informado ou inválido');
             $this->error->errorResponse();
         }
 
-        if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'nome', 'string')){
+        if(!ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'nome', 'string')){
             $this->error->setMessage('Campo nome deve ser string');
             $this->error->errorResponse();
         }
 
-        if(ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'email', 'string')){
+        if(!ArrayUtils::validaTipoDadoPosicaoArray($aRequest, 'email', 'string')){
             $this->error->setMessage('Campo email deve ser string');
             $this->error->errorResponse();
         }

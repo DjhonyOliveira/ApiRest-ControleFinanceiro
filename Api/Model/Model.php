@@ -68,10 +68,10 @@ abstract class Model
      * @param $name
      * @return null
      */
-    // public function __get($name): mixed
-    // {
-    //     return ($this->data->$name ?? null);
-    // }
+    public function __get($name): mixed
+    {
+        return ($this->data->$name ?? null);
+    }
 
     /**
      * @return null|object
