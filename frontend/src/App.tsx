@@ -1,10 +1,13 @@
-import React from 'react';
-import './Global.css';
-import Rotas from './rotas';
+import React from "react";
+import Rotas from "./rotas";
+import MenuAppBar from "./components/MenuAppBar";
 
 function App() {
   return (
-    <Rotas />
+    <>
+      <MenuAppBar />
+      <Rotas />
+    </>
   );
 }
 

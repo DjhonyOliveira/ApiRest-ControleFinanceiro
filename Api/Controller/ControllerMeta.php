@@ -70,7 +70,7 @@ class ControllerMeta extends Controller
                     $aMetas[] = $data;
                 }
     
-                $aRetorno['Metas'] = $aMetas;
+                $aRetorno['metas'] = $aMetas;
             }
             
         }

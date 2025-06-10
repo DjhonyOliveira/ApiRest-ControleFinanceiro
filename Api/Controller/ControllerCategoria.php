@@ -66,7 +66,7 @@ class ControllerCategoria extends Controller
                     $aCategoria[] = $data;
                 }
     
-                $aRetorno['Categorias'] = $aCategoria;
+                $aRetorno['categorias'] = $aCategoria;
             }
         }
 

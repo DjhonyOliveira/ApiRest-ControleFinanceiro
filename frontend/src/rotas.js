@@ -1,19 +1,23 @@
 import React from "react";
-import { BrowserRouter, Link, Route, Routes } from "react-router";
-import Usuario from "./components/pessoas";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Usuarios from "./components/Usuarios";
+import Metas from "./components/Metas";
+import Transacoes from "./components/Transacoes";
+import Categorias from "./components/Categorias";
+import Dashboard from "./components/Dashboard";
 
-export default function Rotas(){
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" exact element={
-                    <div>
-                        <h1>Controle Financeiro</h1>
-                        <Link className="button" to="usuario">Usuarios</Link>
-                    </div>
-                } />
-                <Route path="/usuario" element={<Usuario />} />
-            </Routes>
-        </BrowserRouter>
-    )
+function Rotas() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/metas" element={<Metas />} />
+        <Route path="/transacoes" element={<Transacoes />} />
+        <Route path="/categorias" element={<Categorias />} />
+      </Routes>
+    </>
+  );
 }
+
+export default Rotas;

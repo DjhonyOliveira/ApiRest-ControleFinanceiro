@@ -70,7 +70,7 @@ class ControllerTransacao extends Controller
                     $aTransacao[] = $data;
                 }
     
-                $aRetorno['Transações'] = $aTransacao;
+                $aRetorno['transacoes'] = $aTransacao;
             }
         }
 
