@@ -27,11 +27,9 @@ function Dashboard() {
     api.get("meta/").then(res => setMetas(res.data.metas));
   }, []);
 
-  // Métricas
   const totalTransacoes = transacoes.length;
   const valorTotal = transacoes.reduce((acc, t) => acc + Number(t.valor), 0);
 
-  // Valor por categoria para gráfico de pizza
   const valorPorCategoria = categorias.map(cat => ({
     name: cat.nome,
     value: transacoes
@@ -39,7 +37,6 @@ function Dashboard() {
       .reduce((acc, t) => acc + Number(t.valor), 0)
   })).filter(cat => cat.value > 0);
 
-  // Valor por usuário para gráfico de barras
   const valorPorUsuario = usuarios.map(user => ({
     name: user.nome,
     value: transacoes
@@ -47,7 +44,6 @@ function Dashboard() {
       .reduce((acc, t) => acc + Number(t.valor), 0)
   })).filter(user => user.value > 0);
 
-  // Progresso das metas
   const progressoMetas = metas.map(meta => {
     const valorAlcancado = transacoes
       .filter(t => t.usuario === meta.usuario)

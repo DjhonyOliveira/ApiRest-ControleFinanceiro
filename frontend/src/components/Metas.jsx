@@ -19,115 +19,111 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl
 } from "@mui/material";
 
 function Metas() {
-    const [metas, setMetas]            = useState([]);
-    const [selectedId, setSelectedId]  = useState(null);
-    const [modalOpen, setModalOpen]    = useState(false);
-    const [editMode, setEditMode]      = useState(false);
-    const [nome, setNome]              = useState("");
-    const [valor_alvo, setValorAlvo]   = useState("");
-    const [data_limite, setDataLimite] = useState("");
-    const [usuario, setUsuario]        = useState("");
-    const [usuarios, setUsuarios]      = useState([]);
-    const [snackbar, setSnackbar]      = useState({ open: false, message: "", severity: "success" });
+  const [metas, setMetas] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [nome, setNome] = useState("");
+  const [valor_alvo, setValorAlvo] = useState("");
+  const [data_limite, setDataLimite] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [usuarios, setUsuarios] = useState([]);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
-    useEffect(() => {
-        carregarMetas();
-        carregarUsuarios()
-    }, []);
+  useEffect(() => {
+    carregarMetas();
+    carregarUsuarios();
+  }, []);
 
-    const carregarMetas = async () => {
-        const response = await api.get("meta/");
-        setMetas(response.data.metas);
-    };
+  const carregarMetas = async () => {
+    const response = await api.get("meta/");
+    setMetas(response.data.metas);
+  };
 
-    const carregarUsuarios = async () => {
-        const response = await api.get("usuario/");
-        setUsuarios(response.data.usuarios);
-    };
+  const carregarUsuarios = async () => {
+    const response = await api.get("usuario/");
+    setUsuarios(response.data.usuarios);
+  };
 
-    const getNomeUsuario = (id) => {
-        const usuario = usuarios.find(u => u.id === id);
-        return usuario ? usuario.nome : id;
-    };
+  const handleOpenModal = (edit = false) => {
+    setEditMode(edit);
+    if (edit && selectedId !== null) {
+      const meta = metas.find(m => m.id === selectedId);
+      setNome(meta.nome || meta.descricao || "");
+      setValorAlvo(meta.valor_alvo);
+      setDataLimite(meta.data_limite);
+      setUsuario(meta.usuario);
+    } else {
+      setNome("");
+      setValorAlvo("");
+      setDataLimite("");
+      setUsuario("");
+    }
+    setModalOpen(true);
+  };
 
-    const handleOpenModal = (edit = false) => {
-        setEditMode(edit);
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setNome("");
+    setValorAlvo("");
+    setDataLimite("");
+    setUsuario("");
+  };
 
-        if (edit && selectedId !== null) {
-            const meta = metas.find(m => m.id === selectedId);
+  const handleAddOrEdit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editMode) {
+        await api.put(`meta/${selectedId}`, {
+          descricao: nome,
+          valor_alvo,
+          data_limite,
+          usuario,
+        });
+        setSnackbar({ open: true, message: "Meta atualizada com sucesso!", severity: "success" });
+      } else {
+        await api.post("meta/", {
+          descricao: nome,
+          valor_alvo,
+          data_limite,
+          usuario,
+        });
+        setSnackbar({ open: true, message: "Meta adicionada com sucesso!", severity: "success" });
+      }
+      carregarMetas();
+      handleCloseModal();
+    } catch {
+      setSnackbar({ open: true, message: "Erro ao salvar meta.", severity: "error" });
+    }
+  };
 
-            setNome(meta.nome);
-            setValorAlvo(meta.valor_alvo);
-            setDataLimite(meta.data_limite);
-            setUsuario(meta.usuario);
-        } else {
-            setNome("");
-            setValorAlvo("");
-            setDataLimite("");
-            setUsuario("");
-        }
-        
-        setModalOpen(true);
-    };
+  const handleDelete = async () => {
+    try {
+      await api.delete(`meta/${selectedId}`);
+      setSnackbar({ open: true, message: "Meta excluída!", severity: "info" });
+      setSelectedId(null);
+      carregarMetas();
+    } catch {
+      setSnackbar({ open: true, message: "Erro ao excluir meta.", severity: "error" });
+    }
+  };
 
-    const handleCloseModal = () => {
-        setModalOpen(false);
-        setNome("");
-        setValorAlvo("");
-        setDataLimite("");
-        setUsuario("");
-    };
+  const handleSelect = (id) => {
+    setSelectedId(id === selectedId ? null : id);
+  };
 
-    const handleAddOrEdit = async (e) => {
-        e.preventDefault();
-
-        try {
-            if (editMode) {
-                await api.put(`meta/${selectedId}`, {
-                    nome,
-                    valor_alvo,
-                    data_limite,
-                    usuario,
-                });
-
-                setSnackbar({ open: true, message: "Meta atualizada com sucesso!", severity: "success" });
-            } else {
-                await api.post("meta/", {
-                    nome,
-                    valor_alvo,
-                    data_limite,
-                    usuario,
-                });
-
-                setSnackbar({ open: true, message: "Meta adicionada com sucesso!", severity: "success" });
-            }
-
-            carregarMetas();
-            handleCloseModal();
-        } catch {
-            setSnackbar({ open: true, message: "Erro ao salvar meta.", severity: "error" });
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            await api.delete(`meta/${selectedId}`);
-
-            setSnackbar({ open: true, message: "Meta excluída!", severity: "info" });
-            setSelectedId(null);
-            carregarMetas();
-        } catch {
-            setSnackbar({ open: true, message: "Erro ao excluir meta.", severity: "error" });
-        }
-    };
-
-    const handleSelect = (id) => {
-        setSelectedId(id === selectedId ? null : id);
-    };
+  const getNomeUsuario = (id) => {
+    const user = usuarios.find(u => u.id === id);
+    return user ? user.nome : id;
+  };
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -175,9 +171,13 @@ function Metas() {
                     onChange={() => handleSelect(meta.id)}
                   />
                 </TableCell>
-                <TableCell>{meta.nome}</TableCell>
-                <TableCell>{Number(meta.valor_alvo).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</TableCell>
-                <TableCell>{new Date(meta.data_limite).toLocaleDateString('pt-BR')}</TableCell>
+                <TableCell>{meta.nome || meta.descricao}</TableCell>
+                <TableCell>
+                  {Number(meta.valor_alvo).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                </TableCell>
+                <TableCell>
+                  {new Date(meta.data_limite).toLocaleDateString('pt-BR')}
+                </TableCell>
                 <TableCell>{getNomeUsuario(meta.usuario)}</TableCell>
               </TableRow>
             ))}
@@ -212,13 +212,19 @@ function Metas() {
               required
               InputLabelProps={{ shrink: true }}
             />
-            <TextField
-              label="ID Usuário"
-              type="number"
-              value={usuario}
-              onChange={(e) => setUsuario(e.target.value)}
-              required
-            />
+            <FormControl fullWidth required>
+              <InputLabel id="usuario-label">Usuário</InputLabel>
+              <Select
+                labelId="usuario-label"
+                value={usuario}
+                label="Usuário"
+                onChange={e => setUsuario(e.target.value)}
+              >
+                {usuarios.map(u => (
+                  <MenuItem key={u.id} value={u.id}>{u.nome}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseModal}>Cancelar</Button>
