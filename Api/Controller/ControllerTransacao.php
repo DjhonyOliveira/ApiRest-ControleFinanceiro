@@ -128,7 +128,7 @@ class ControllerTransacao extends Controller
             Response::ResponseJson(['ok' => 'Transação deletada com sucesso']);
         }
 
-        Response::ResponseJson(['error' => $this->model->fail()->getMessage()], EnumResponse::INTERNAL_SERVER_ERROR);
+        Response::ResponseJson(['error' => $this->model->fail()->getMessage()]);
     }
 
     private function validaRequisicao(array $aRequest): void

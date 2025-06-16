@@ -83,16 +83,16 @@ function Metas() {
     try {
       if (editMode) {
         await api.put(`meta/${selectedId}`, {
-          descricao: nome,
-          valor_alvo,
+          nome: nome,
+          valor_alvo: parseFloat(valor_alvo),
           data_limite,
           usuario,
         });
         setSnackbar({ open: true, message: "Meta atualizada com sucesso!", severity: "success" });
       } else {
         await api.post("meta/", {
-          descricao: nome,
-          valor_alvo,
+          nome: nome,
+          valor_alvo: parseFloat(valor_alvo),
           data_limite,
           usuario,
         });

@@ -94,20 +94,20 @@ function Transacoes() {
     try {
       if (editMode) {
         await api.put(`transacao/${selectedId}`, {
-          valor,
+          valor: parseFloat(valor),
           descricao,
           date,
-          categoria,
-          usuario,
+          categoria: Number(categoria),
+          usuario: Number(usuario),
         });
         setSnackbar({ open: true, message: "Transação atualizada com sucesso!", severity: "success" });
       } else {
         await api.post("transacao/", {
-          valor,
+          valor: parseFloat(valor),
           descricao,
           date,
-          categoria,
-          usuario,
+          categoria: Number(categoria),
+          usuario: Number(usuario),
         });
         setSnackbar({ open: true, message: "Transação adicionada com sucesso!", severity: "success" });
       }
